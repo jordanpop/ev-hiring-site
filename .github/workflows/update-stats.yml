@@ -30,3 +30,9 @@ jobs:
           git add stats.json
           git diff --cached --quiet || git commit -m "chore: weekly stats refresh"
           git push
+
+      # 行喺 commit 之後：Notion 死咗唔會拖累網站更新，但 job 會轉紅 → email 通知
+      - name: Push monthly table to Notion
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+        run: python scripts/push_notion.py

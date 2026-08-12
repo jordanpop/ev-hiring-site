@@ -157,10 +157,21 @@ def main():
 
     errors = []
     per_account = {}
+    monthly = {}          # label -> {month: [videos, views]} — feeds the Notion table
     total_views = total_videos = 0
 
     for acc in accounts:
         label, handle = acc["label"], acc["handle"]
+        if acc.get("frozen"):
+            bm = {int(m): list(cv) for m, cv in acc["frozen_monthly"].items()}
+            n = sum(c for c, _ in bm.values())
+            v_sum = sum(v for _, v in bm.values())
+            monthly[label] = bm
+            per_account[label] = {"videos": n, "views": v_sum, "frozen": True}
+            total_videos += n
+            total_views += v_sum
+            print(f"[frozen] {label}: {n} videos, {v_sum:,} views (not re-fetched)", flush=True)
+            continue
         print(f"[pull] {label} (@{handle}) ...", flush=True)
         filt = make_filter(acc["filter"], sponsor_brands)
         items = apify_run(IG_ACTOR, {
@@ -178,14 +189,20 @@ def main():
                     fb_items.append((ep, fb_plays(it.get("playCountRounded"))))
 
         n = v_sum = 0
+        bm = {}
         for r in items:
             if post_year(r) == year and filt(r):
                 v = views(r)
                 ep = ts_epoch(r.get("timestamp"))
                 if fb_items and ep is not None:
                     v += match_fb(ep, fb_items, fb_used)
+                m = datetime.fromisoformat(r["timestamp"].replace("Z", "+00:00")).month
+                cell = bm.setdefault(m, [0, 0])
+                cell[0] += 1
+                cell[1] += v
                 n += 1
                 v_sum += v
+        monthly[label] = bm
 
         floor = acc.get("min_expected", 1)
         if n < floor:
@@ -196,7 +213,8 @@ def main():
         print(f"       {n} videos, {v_sum:,} views", flush=True)
 
     print("[pull] follower counts ...", flush=True)
-    handles = [a["handle"] for a in accounts if a.get("count_followers", True)]
+    handles = [a["handle"] for a in accounts
+               if a.get("count_followers", True) and not a.get("frozen")]
     details = apify_run(IG_ACTOR, {
         "directUrls": [f"https://www.instagram.com/{h}/" for h in handles],
         "resultsType": "details", "resultsLimit": 1}, token)
@@ -233,6 +251,18 @@ def main():
         "per_account": per_account,
     }
     STATS_PATH.write_text(json.dumps(stats, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    # Workspace-only artifact for push_notion.py — gitignored, never committed
+    # (per-client monthly numbers stay out of the public repo).
+    breakdown = {
+        "year": year,
+        "snapshot": stats["updated"],
+        "labels": [a["label"] for a in accounts],
+        "frozen_labels": [a["label"] for a in accounts if a.get("frozen")],
+        "monthly": {lbl: {str(m): cv for m, cv in bm.items()} for lbl, bm in monthly.items()},
+    }
+    (REPO_ROOT / "monthly_breakdown.json").write_text(
+        json.dumps(breakdown, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"\n[OK] stats.json updated: {total_views:,} views / {total_videos} videos / {total_followers:,} followers")
 
 

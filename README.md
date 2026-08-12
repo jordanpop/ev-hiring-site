@@ -21,7 +21,7 @@ CNAME                             ← custom domain 設定，唔好刪
 
 ## 數字自動更新
 
-- 逢星期一 03:00（HKT）自動跑：拉晒 config 入面全部帳號 → 計三個總數 → 寫入 `stats.json` → 網站即刻用新數。
+- 逢星期一 03:00（HKT）自動跑：拉晒 config 入面全部帳號 → 計三個總數 → 寫入 `stats.json` → 網站即刻用新數 → **順手重寫 Notion「Monthly views record」頁**（每月分 client 明細表）。
 - 想即刻手動跑一次：**Actions tab → Update stats → Run workflow**。
 - **跑失敗 = 唔會更新數字**（網站繼續顯示上一次嘅好數），GitHub 會 email 通知 repo owner。常見原因：某帳號拉返嚟條數低過 `min_expected`（filter 飄咗／scrape 壞咗），入去 Actions log 睇邊個帳號報錯。
 
@@ -36,7 +36,10 @@ CNAME                             ← custom domain 設定，唔好刪
 
 ## Secrets
 
-- `APIFY_TOKEN`（Settings → Secrets and variables → Actions）— 拉 IG/FB 數用。冇佢 workflow 必死。
+（Settings → Secrets and variables → Actions）
+
+- `APIFY_TOKEN` — 拉 IG/FB 數用。冇佢 workflow 必死。
+- `NOTION_TOKEN` — 更新 Notion monthly views 頁用。喺 notion.so/my-integrations 開個 internal integration，再去「Monthly views record」頁 ⋯ menu → Connections → 加個 integration。呢步唔搞，網站照更新，淨係 Notion 嗰步會 fail。
 
 ## 數字口徑
 
