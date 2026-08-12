@@ -44,4 +44,5 @@ CNAME                             ← custom domain 設定，唔好刪
 ## 數字口徑
 
 - **Views** = IG `videoPlayCount`（IG 公開顯示嘅「Views」；唔用舊制 `videoViewCount`）＋ cross-post 帳號嘅 FB plays；2026 年內 post、經 filter 認定係我哋出品嘅片；累計終身數。
-- **顯示值捨入**：views 落捨到十萬位、followers 到千位、片數到十位，配「+」號（`stats.json` 入面 `*_display` 係顯示值，齋數係實數）。
+- **出實數，唔捨入**（2026-08-12 拍板：「有幾多就出幾多，真實啲」），亦冇「+」號；網站數字下面自動標明數據截至日期。
+- **人手覆核**：Notion 頁每個 client 有個 toggle，列晒每條被計入嘅片（日期連結返原 post ＋ views ＋ caption 頭幾隻字）。見到唔應該計嘅片 → 改 `stats_config.json` 個 filter。

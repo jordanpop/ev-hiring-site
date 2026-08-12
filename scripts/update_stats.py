@@ -136,10 +136,6 @@ def match_fb(ig_epoch, fb_items, used):
     return 0
 
 
-def floor_to(n, step):
-    return (n // step) * step
-
-
 def main():
     token = os.environ.get("APIFY_TOKEN")
     if not token:
@@ -158,6 +154,7 @@ def main():
     errors = []
     per_account = {}
     monthly = {}          # label -> {month: [videos, views]} — feeds the Notion table
+    per_video = {}        # label -> [{date, views, url, caption}] — for manual spot-checks
     total_views = total_videos = 0
 
     for acc in accounts:
@@ -190,19 +187,27 @@ def main():
 
         n = v_sum = 0
         bm = {}
+        vids = []
         for r in items:
             if post_year(r) == year and filt(r):
                 v = views(r)
                 ep = ts_epoch(r.get("timestamp"))
+                fbv = 0
                 if fb_items and ep is not None:
-                    v += match_fb(ep, fb_items, fb_used)
-                m = datetime.fromisoformat(r["timestamp"].replace("Z", "+00:00")).month
-                cell = bm.setdefault(m, [0, 0])
+                    fbv = match_fb(ep, fb_items, fb_used)
+                    v += fbv
+                d = datetime.fromisoformat(r["timestamp"].replace("Z", "+00:00"))
+                cell = bm.setdefault(d.month, [0, 0])
                 cell[0] += 1
                 cell[1] += v
                 n += 1
                 v_sum += v
+                cap = " ".join((r.get("caption") or "").split())[:45]
+                vids.append({"date": d.strftime("%Y-%m-%d"), "views": v, "fb": fbv,
+                             "url": r.get("url") or "", "caption": cap})
+        vids.sort(key=lambda x: x["date"])
         monthly[label] = bm
+        per_video[label] = vids
 
         floor = acc.get("min_expected", 1)
         if n < floor:
@@ -240,14 +245,15 @@ def main():
         print("\n[smoke-test OK] --only mode never writes stats.json")
         return
 
+    # 實數出街，唔捨入 — 用戶 2026-08-12 拍板：「有幾多就出幾多，真實啲」
     stats = {
         "updated": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
         "views": total_views,
-        "views_display": floor_to(total_views, 100_000),
+        "views_display": total_views,
         "videos": total_videos,
-        "videos_display": floor_to(total_videos, 10),
+        "videos_display": total_videos,
         "followers": total_followers,
-        "followers_display": floor_to(total_followers, 1_000),
+        "followers_display": total_followers,
         "per_account": per_account,
     }
     STATS_PATH.write_text(json.dumps(stats, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -260,6 +266,7 @@ def main():
         "labels": [a["label"] for a in accounts],
         "frozen_labels": [a["label"] for a in accounts if a.get("frozen")],
         "monthly": {lbl: {str(m): cv for m, cv in bm.items()} for lbl, bm in monthly.items()},
+        "per_video": per_video,
     }
     (REPO_ROOT / "monthly_breakdown.json").write_text(
         json.dumps(breakdown, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
