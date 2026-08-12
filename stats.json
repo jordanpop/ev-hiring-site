@@ -1,11 +1,36 @@
 {
-  "updated": "2026-08-08",
-  "views": 12800000,
-  "views_display": 12800000,
-  "videos": 200,
-  "videos_display": 200,
-  "followers": 100000,
-  "followers_display": 100000,
-  "per_account": {},
-  "_note": "seed values from Ivan draft; first Action run replaces this"
+  "updated": "2026-08-12",
+  "views": 14098637,
+  "views_display": 14000000,
+  "videos": 175,
+  "videos_display": 170,
+  "followers": 102464,
+  "followers_display": 102000,
+  "per_account": {
+    "Winson": {
+      "videos": 36,
+      "views": 940919
+    },
+    "Gen_i": {
+      "videos": 17,
+      "views": 127770,
+      "frozen": true
+    },
+    "EliteVoice": {
+      "videos": 21,
+      "views": 2847871
+    },
+    "ivankeatingg": {
+      "videos": 58,
+      "views": 857174
+    },
+    "yappuccinoo_": {
+      "videos": 37,
+      "views": 8933763
+    },
+    "Yoru": {
+      "videos": 6,
+      "views": 391140
+    }
+  }
 }
