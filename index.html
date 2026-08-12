@@ -99,9 +99,16 @@
   .acchead .pm{font-size:26px;color:var(--gold);font-weight:300;transition:transform .3s;line-height:1;}
   .accitem.open .acchead .pm{transform:rotate(45deg);}
   .accpanel{max-height:0;overflow:hidden;transition:max-height .38s ease;}
-  .accpanel ul{list-style:none;padding:0 8px 30px 44px;}
+  .accpanel ul{list-style:none;padding:0 8px 20px 44px;}
   .accpanel li{padding-left:22px;position:relative;margin-bottom:12px;font-size:16px;color:var(--text);}
   .accpanel li::before{content:"";position:absolute;left:0;top:11px;width:6px;height:6px;background:var(--gold);border-radius:50%;}
+  .accpanel .acclabel{padding:0 8px 0 44px;margin:2px 0 14px;font-size:12px;letter-spacing:.18em;font-weight:600;color:var(--gold);}
+  .accpanel .accnote{padding:0 8px 0 44px;margin:0;font-size:15.5px;line-height:1.8;color:var(--muted);}
+  .accpanel .accnote + .acclabel{margin-top:22px;}
+  .accpanel .accpad{height:30px;}
+  @media (max-width:640px){
+    .accpanel ul,.accpanel .acclabel,.accpanel .accnote{padding-left:20px;}
+  }
 
   /* ---------- HOW ---------- */
   .how{text-align:center;}
@@ -234,40 +241,83 @@
     <div class="acc reveal" id="acc">
 
       <div class="accitem open">
-        <button class="acchead"><span class="emoji">🎬</span><span class="rt"><h3>Editor 剪接師</h3><span class="tag">短視頻為主</span></span><span class="pm">+</span></button>
-        <div class="accpanel"><ul>
-          <li>我們的內容全部以短視頻（IG Reels／直度短片）為主</li>
-          <li>必須懂得運用 AI 剪片</li>
-          <li>能判斷什麼是好片、什麼是不好的片</li>
-          <li>懂得越多配置與特效（effect）越好</li>
-        </ul></div>
+        <button class="acchead"><span class="emoji">🎬</span><span class="rt"><h3>Editor 剪接師</h3><span class="tag">短視頻 · 以 project 為單位</span></span><span class="pm">+</span></button>
+        <div class="accpanel">
+          <p class="acclabel">你會做的事</p>
+          <ul>
+            <li>根據清晰的剪接指示完成製作：選段、字幕、B-roll、配樂、規格輸出 —— 內容取捨與結構會有明確標註，你負責將它執行到最好</li>
+            <li>保持同一批次影片的一致性：字幕風格、節奏、配樂統一</li>
+            <li>收到素材後主動檢查，發現問題及時回報</li>
+            <li>自行安排交付節奏，準時交付；交付前自行對照 checklist 檢查 —— 我們期望的是一次過關的成品，而不是依賴別人替你把關</li>
+          </ul>
+          <p class="acclabel">我們的要求</p>
+          <ul>
+            <li>熟用至少一個剪片工具（CapCut／Premiere 等）</li>
+            <li>不要求你已經懂得 AI 剪片，但必須願意學習、樂於嘗試 AI 工具；已經上手的是加分</li>
+            <li>能判斷什麼是好片、什麼是不好的片</li>
+            <li>懂得越多配置與特效（effect）越好</li>
+            <li>有責任心：準時、溝通清晰、對自己交出的每一條片負責</li>
+          </ul>
+          <p class="acclabel">我們對你的期望</p>
+          <p class="accnote">第一個月，我們會提供完整的上手支援：成熟的 SOP、已在市場驗證的參考作品、清晰的工作指示。但我們不是尋找長期停留在執行層的人 —— 我們期望你在第二、三個月起，能夠獨立 handle 一個 project：由理解內容方向，到自主完成整批交付。能獨當一面的人，將有機會參與內容判斷，商討更深入的合作。</p>
+          <div class="accpad"></div>
+        </div>
       </div>
 
       <div class="accitem">
         <button class="acchead"><span class="emoji">🎨</span><span class="rt"><h3>Designer 設計師</h3><span class="tag">Thumbnail · Carousel</span></span><span class="pm">+</span></button>
-        <div class="accpanel"><ul>
-          <li>能設計出吸引人的 thumbnail 封面</li>
-          <li>懂得製作 carousel</li>
-          <li>了解什麼樣的 carousel 能吸引觀眾</li>
-        </ul></div>
+        <div class="accpanel">
+          <p class="acclabel">你會做的事</p>
+          <ul>
+            <li>為短視頻設計 thumbnail 封面</li>
+            <li>設計 carousel 圖文內容</li>
+          </ul>
+          <p class="acclabel">我們的要求</p>
+          <ul>
+            <li>能設計出吸引人、令人想點開的 thumbnail 封面</li>
+            <li>懂得製作 carousel，並了解什麼樣的 carousel 能吸引觀眾</li>
+            <li>有責任心、準時交付</li>
+          </ul>
+          <div class="accpad"></div>
+        </div>
       </div>
 
       <div class="accitem">
-        <button class="acchead"><span class="emoji">🎭</span><span class="rt"><h3>Actor 演員</h3><span class="tag">品牌角色演繹</span></span><span class="pm">+</span></button>
-        <div class="accpanel"><ul>
-          <li>為不同品牌演繹其角色</li>
-          <li>呈現該品牌想要表達的訊息</li>
-          <li>以真實的演出贏得觀眾</li>
-        </ul></div>
+        <button class="acchead"><span class="emoji">🎭</span><span class="rt"><h3>Actor 演員</h3><span class="tag">品牌在鏡頭前的面孔</span></span><span class="pm">+</span></button>
+        <div class="accpanel">
+          <p class="acclabel">你會做的事</p>
+          <ul>
+            <li>為不同品牌出鏡拍攝內容，演繹並呈現該品牌想表達的訊息</li>
+            <li>形式多元：可能是品牌短片的出鏡主角 —— 不少客戶有內容需求，但團隊未必想親自出鏡，你將代表品牌站在鏡頭前；也可能是街訪等實地內容</li>
+          </ul>
+          <p class="acclabel">我們的要求</p>
+          <ul>
+            <li>鏡頭前自然、真實，以真誠的演出贏得觀眾，不 over-act</li>
+            <li>能消化腳本重點，再用自己的方式自然地表達出來</li>
+            <li>面對陌生環境與陌生人，仍能保持狀態、建立連結</li>
+          </ul>
+          <div class="accpad"></div>
+        </div>
       </div>
 
       <div class="accitem">
         <button class="acchead"><span class="emoji">📷</span><span class="rt"><h3>Cameraman 攝影師</h3><span class="tag">iPhone · DJI · Pro Gear</span></span><span class="pm">+</span></button>
-        <div class="accpanel"><ul>
-          <li>懂得基本攝影器材：iPhone、DJI</li>
-          <li>懂得使用收音咪</li>
-          <li>懂得使用專業攝影器材（例如 Canon 等）</li>
-        </ul></div>
+        <div class="accpanel">
+          <p class="accnote">先說清楚：我們不是傳統影像製作團隊。我們不追求大製作的排場與規格，追求的是為 Reels 而生的畫面。</p>
+          <p class="acclabel">你會做的事</p>
+          <ul>
+            <li>按照 shot list 完成拍攝 —— 有清晰的畫面清單可跟，但不死板，現場懂得為短視頻的需要靈活調整</li>
+            <li>拍攝 talking head、B-roll 及實地內容</li>
+          </ul>
+          <p class="acclabel">我們的要求</p>
+          <ul>
+            <li>熟悉 Reels／短視頻的節奏與拍攝要求 —— 這比傳統影像專業更重要</li>
+            <li>懂得基本攝影器材：iPhone、DJI</li>
+            <li>懂得使用收音咪</li>
+            <li>懂得使用專業攝影器材（例如 Canon 等）</li>
+          </ul>
+          <div class="accpad"></div>
+        </div>
       </div>
 
     </div>
@@ -281,8 +331,9 @@
     <h2 class="serif reveal">我們如何開始</h2>
     <p class="lead reveal">簡單、清楚、沒有彎路。</p>
     <div class="howbox reveal">
-      <p>我們一開始會以 <strong>freelance 形式合作</strong>。我們喜歡先彼此了解、磨合，待做出成績、雙方都合適，才會商討更深入的合作。</p>
-      <p>我們重視你付出的每一分心力，並會給予<strong>合理的報酬</strong>。起步階段的待遇，我們會坦誠、清楚地說明 —— 絕無隱藏，亦不會拖欠。</p>
+      <p>我們一開始會以 <strong>freelance 形式、以 project 為單位</strong>合作。我們喜歡先彼此了解、磨合，待做出成績、雙方都合適，才會商討更深入的合作。</p>
+      <p>我們重視你付出的每一分心力，並會給予<strong>合理的報酬</strong>。起步階段的待遇，我們會在面談時坦誠、清楚地說明 —— 絕無隱藏，亦不會拖欠。</p>
+      <p>通過面談與試工後，你會加入我們的<strong>合作名單</strong>；當有合適的 project 啟動，我們會第一時間聯絡你。</p>
     </div>
   </div>
 </section>
