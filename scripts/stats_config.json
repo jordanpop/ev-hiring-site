@@ -1,0 +1,44 @@
+{
+  "_comment": "邊啲帳號、點樣 filter 先算「我哋整嘅片」。加 client／filter 飄咗 → 改呢度，唔使掂 script。min_expected = 條數下限（低過即當 scrape 壞咗，唔更新數字）。count_followers=false 可以剔走某帳號嘅 followers（預設計）。",
+  "year": 2026,
+  "sponsor_brands": ["KFC", "Nespresso", "Blue Bottle", "Segafredo", "伝說", "伝説", "傳說咖啡", "Starbucks", "Pacific Coffee", "% Arabica"],
+  "accounts": [
+    {
+      "label": "Winson",
+      "handle": "wincrazy",
+      "filter": {"type": "caption_contains", "value": "國際數學考試軍師"},
+      "min_expected": 30
+    },
+    {
+      "label": "Gen_i",
+      "handle": "Geni.nvestor",
+      "filter": {"type": "caption_contains", "value": "街坊訪問"},
+      "min_expected": 12
+    },
+    {
+      "label": "EliteVoice",
+      "handle": "elitevoice.hk",
+      "filter": {"type": "any_video"},
+      "min_expected": 10
+    },
+    {
+      "label": "ivankeatingg",
+      "handle": "ivankeatingg",
+      "filter": {"type": "any_video"},
+      "min_expected": 40
+    },
+    {
+      "label": "yappuccinoo_",
+      "handle": "yappuccinoo_",
+      "filter": {"type": "video_not_sponsor"},
+      "min_expected": 30
+    },
+    {
+      "label": "Yoru",
+      "handle": "yoru_teppanyaki",
+      "filter": {"type": "caption_contains", "value": "板前十二問"},
+      "min_expected": 10,
+      "facebook_page": "https://www.facebook.com/p/Yoru-Teppanyaki-100086718939009/"
+    }
+  ]
+}
