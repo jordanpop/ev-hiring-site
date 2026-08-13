@@ -27,8 +27,8 @@ jobs:
         run: |
           git config user.name "stats-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add stats.json
-          git diff --cached --quiet || git commit -m "chore: weekly stats refresh"
+          git add stats.json covers/
+          git diff --cached --quiet || git commit -m "chore: weekly stats + covers refresh"
           git push
 
       # 行喺 commit 之後：Notion 死咗唔會拖累網站更新，但 job 會轉紅 → email 通知
