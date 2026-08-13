@@ -86,8 +86,6 @@
   .gcard .gt span{font-size:12px;color:var(--muted);line-height:1.5;display:block;margin-top:2px;}
   .gmore{font-size:13.5px;color:var(--muted);margin-top:18px;}
   .cardimg{position:relative;}
-  .vbadge{position:absolute;left:8px;bottom:8px;background:rgba(8,8,12,.74);color:#fff;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;letter-spacing:.03em;backdrop-filter:blur(3px);}
-  .vbadge::before{content:"▶ ";color:var(--gold-soft);font-size:10px;}
 
   /* ---------- WORK WALL（全闊膠卷牆）---------- */
   .work{background:var(--paper-2);}
@@ -496,35 +494,34 @@
 
   // ══════════════ 卡片 TEMPLATE ══════════════
   // 以後加新封面：淨係喺下面兩個 array 加一行就得，唔使掂任何 HTML/CSS。
-  // img   = assets/cards/ 入面個檔名
-  // views = 左下角 badge 字串；封面本身已印住 views 嘅（IG screenshot 版）就留空 ''
+  // img = assets/cards/ 入面個檔名（用 IG 截圖版封面，views 係 IG 原生 render，唔人手加數字）
   const GUEST_CARDS = [
-    {img:'iv_cookie_1200k.jpg',   name:'謝寧',                 title:'曲奇四重奏 創辦人',              views:''},
-    {img:'hd_school_736k.jpg',    name:'葉校長',               title:'閩僑小學',                     views:'736K'},
-    {img:'hd_stephen_432k.jpg',   name:'馬校長',               title:'聖士提反書院',                  views:'432K'},
-    {img:'hd_realestate_371k.jpg',name:'前 Executive Director',title:'香港房地產投資時機',             views:'371K'},
-    {img:'hd_goalkeeper_161k.jpg',name:'葉鴻輝',               title:'東亞運金牌門將',                views:'161K'},
-    {img:'hd_meitu_38k.jpg',      name:'蔡文勝',               title:'美圖秀秀 創辦人',               views:'37.8K'},
-    {img:'hd_chargespot_22k.jpg', name:'Jess',                title:'ChargeSpot 聯合創辦人兼香港區 CEO', views:'22K'},
+    {img:'iv_cookie_1200k.jpg',    name:'謝寧',                 title:'曲奇四重奏 創辦人'},
+    {img:'iv_school_736k.jpg',     name:'葉校長',               title:'閩僑小學'},
+    {img:'iv_principal_432k.jpg',  name:'馬校長',               title:'聖士提反書院'},
+    {img:'iv_realestate_371k.jpg', name:'前 Executive Director',title:'香港房地產投資時機'},
+    {img:'iv_goalkeeper_161k.jpg', name:'葉鴻輝',               title:'東亞運金牌門將'},
+    {img:'iv_meitu_38k.jpg',       name:'蔡文勝',               title:'美圖秀秀 創辦人'},
+    {img:'iv_chargespot_22k.jpg',  name:'Jess',                title:'ChargeSpot 聯合創辦人兼香港區 CEO'},
   ];
   const WORK_CARDS = [
-    {img:'hd_karma_762k.jpg',     views:'762K'},
-    {img:'ws_uni_231k.jpg',       views:''},
-    {img:'hd_tutor300k_445k.jpg', views:'445K'},
-    {img:'yoru_ep3_133k.jpg',     views:''},
-    {img:'ws_ib_184k.jpg',        views:''},
-    {img:'game_mahjong_101k.jpg', views:''},
-    {img:'ws_fire_159k.jpg',      views:''},
-    {img:'yoru_ep2_131k.jpg',     views:''},
-    {img:'hd_biotech_79k.jpg',    views:'79K'},
-    {img:'ws_alevel_124k.jpg',    views:''},
-    {img:'hd_ws_intschool_48k.jpg', views:'48K'},
-    {img:'yoru_ep6_74k.jpg',      views:''},
-    {img:'hd_ws_ibnews_28k.jpg',  views:'28K'},
+    {img:'iv_karma_761k.jpg'},
+    {img:'ws_uni_231k.jpg'},
+    {img:'ws_ib_184k.jpg'},
+    {img:'yoru_ep3_133k.jpg'},
+    {img:'game_mahjong_101k.jpg'},
+    {img:'ws_fire_159k.jpg'},
+    {img:'yoru_ep2_131k.jpg'},
+    {img:'iv_biotech_79k.jpg'},
+    {img:'ws_alevel_124k.jpg'},
+    {img:'ws_intschool_49k.jpg'},
+    {img:'yoru_ep6_74k.jpg'},
+    {img:'hd_ws_ibnews_28k.jpg'},
   ];
   // ════════════ TEMPLATE 完（下面係渲染邏輯，唔使掂）════════════
 
-  const cardImg = c => `<div class="cardimg"><img src="assets/cards/${c.img}" alt="${c.name||'作品封面'}" loading="lazy">${c.views?`<span class="vbadge">${c.views}</span>`:''}</div>`;
+  // 封面照原圖出，唔疊任何數字——views 得 IG 截圖本身 render 咗嘅先會見到（真實原則）
+  const cardImg = c => `<div class="cardimg"><img src="assets/cards/${c.img}" alt="${c.name||'作品封面'}" loading="lazy"></div>`;
 
   // 街訪人物卡
   const gwrapEl = document.getElementById('gcards');
