@@ -26,7 +26,6 @@ HERE = Path(__file__).resolve().parent
 REPO_ROOT = HERE.parent
 CONFIG_PATH = HERE / "stats_config.json"
 STATS_PATH = REPO_ROOT / "stats.json"
-COVERS_DIR = REPO_ROOT / "covers"   # 封面圖庫：covers/{label}/{shortCode}.jpg，增量下載
 
 APIFY_BASE = "https://api.apify.com/v2"
 IG_ACTOR = "apify~instagram-scraper"
@@ -157,7 +156,6 @@ def main():
     monthly = {}          # label -> {month: [videos, views]} — feeds the Notion table
     per_video = {}        # label -> [{date, views, url, caption}] — for manual spot-checks
     total_views = total_videos = 0
-    cover_jobs = []          # (label, shortCode, displayUrl) — 過濾後屬於我哋嘅片先入嚟
 
     for acc in accounts:
         label, handle = acc["label"], acc["handle"]
@@ -207,10 +205,6 @@ def main():
                 cap = " ".join((r.get("caption") or "").split())[:45]
                 vids.append({"date": d.strftime("%Y-%m-%d"), "views": v, "fb": fbv,
                              "url": r.get("url") or "", "caption": cap})
-                if r.get("shortCode") and r.get("displayUrl"):
-                    cover_jobs.append({"label": label, "shortCode": r["shortCode"],
-                                       "url": r["displayUrl"], "views": v,
-                                       "date": d.strftime("%Y-%m-%d")})
         vids.sort(key=lambda x: x["date"])
         monthly[label] = bm
         per_video[label] = vids
@@ -250,29 +244,6 @@ def main():
     if only:
         print("\n[smoke-test OK] --only mode never writes stats.json")
         return
-
-    # 封面增量下載：IG displayUrl 係會過期嘅 signed URL，所以每週趁新鮮抓落嚟存底。
-    # 已存在嘅 skip（shortCode 唯一）；individual 下載失敗只警告，唔會 fail 成個 run。
-    import urllib.request as _rq
-    new_covers = fail_covers = 0
-    for job in cover_jobs:
-        label, sc, url = job["label"], job["shortCode"], job["url"]
-        dest = COVERS_DIR / label / f"{sc}.jpg"
-        if dest.exists():
-            continue
-        dest.parent.mkdir(parents=True, exist_ok=True)
-        try:
-            req = _rq.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-            dest.write_bytes(_rq.urlopen(req, timeout=30).read())
-            new_covers += 1
-        except Exception as e:
-            fail_covers += 1
-            print(f"[warn] cover {label}/{sc}: {e}", flush=True)
-    print(f"[covers] {new_covers} new downloaded, {fail_covers} failed, dir={COVERS_DIR}", flush=True)
-    # manifest 俾 push_covers_notion.py 用（file link 式上圖庫頁）
-    (REPO_ROOT / "covers_manifest.json").write_text(json.dumps(
-        [{k: j[k] for k in ("label", "shortCode", "views", "date")} for j in cover_jobs],
-        ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
 
     # 實數出街，唔捨入 — 用戶 2026-08-12 拍板：「有幾多就出幾多，真實啲」
     stats = {

@@ -87,22 +87,19 @@
   .gmore{font-size:13.5px;color:var(--muted);margin-top:18px;}
   .cardimg{position:relative;}
 
-  /* ---------- WORK WALL（全闊膠卷牆）---------- */
+  /* ---------- WORK SPOTLIGHT（輪換展示，一次三張）---------- */
   .work{background:var(--paper-2);}
-  .wall{margin-top:54px;display:flex;flex-direction:column;gap:18px;overflow:hidden;}
-  .wrow{display:flex;gap:18px;width:max-content;animation:wallL 48s linear infinite;}
-  .wrow[data-dir="right"]{animation-name:wallR;animation-duration:56s;}
-  .wrow:hover{animation-play-state:paused;}
-  .mcard{position:relative;flex:0 0 auto;width:212px;border-radius:12px;overflow:hidden;box-shadow:0 12px 30px rgba(13,13,18,.16);transition:transform .25s;}
-  .mcard:hover{transform:scale(1.04);}
-  .mcard img{width:100%;aspect-ratio:9/16;object-fit:cover;display:block;}
-  @keyframes wallL{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-  @keyframes wallR{from{transform:translateX(-50%)}to{transform:translateX(0)}}
-  @media (prefers-reduced-motion: reduce){
-    .wrow{animation:none;}
-    .wall{overflow-x:auto;}
+  .spot{display:flex;justify-content:center;gap:28px;margin-top:54px;}
+  .scard{width:236px;border-radius:14px;overflow:hidden;box-shadow:0 16px 38px rgba(13,13,18,.18);
+    opacity:1;transform:none;transition:opacity .7s ease,transform .7s ease;}
+  .scard.swap{opacity:0;transform:translateY(16px) scale(.97);}
+  .scard img{width:100%;aspect-ratio:9/16;object-fit:cover;display:block;}
+  .spothint{text-align:center;font-size:12.5px;color:var(--muted);margin-top:26px;letter-spacing:.05em;}
+  @media (max-width:820px){
+    .spot{gap:14px;}
+    .scard{width:31%;}
   }
-  @media (max-width:640px){ .mcard{width:150px;} .wrow{gap:12px;} }
+  @media (prefers-reduced-motion: reduce){ .scard{transition:none;} }
 
   /* ---------- WHY ---------- */
   .why{background:var(--ink);color:#fff;}
@@ -249,9 +246,9 @@
     <div class="rule reveal"></div>
     <p class="lead reveal">與其講理念，不如直接看貨。這是我們團隊近期出品的部分作品——由選題、拍攝到剪接與封面，全部自己一手包辦。</p>
   </div>
-  <div class="wall reveal" id="wall" aria-label="我們的作品封面牆">
-    <div class="wrow" data-dir="left"></div>
-    <div class="wrow" data-dir="right"></div>
+  <div class="wrap">
+    <div class="spot reveal" id="spot" aria-label="我們的作品（輪換展示）"></div>
+    <p class="spothint reveal">作品輪流展示 · 每隔幾秒自動更替</p>
   </div>
 </section>
 
@@ -516,7 +513,6 @@
     {img:'ws_alevel_124k.jpg'},
     {img:'ws_intschool_49k.jpg'},
     {img:'yoru_ep6_74k.jpg'},
-    {img:'hd_ws_ibnews_28k.jpg'},
   ];
   // ════════════ TEMPLATE 完（下面係渲染邏輯，唔使掂）════════════
 
@@ -528,14 +524,42 @@
   if(gwrapEl) gwrapEl.innerHTML = GUEST_CARDS.map(c =>
     `<div class="gcard">${cardImg(c)}<div class="gt"><b>${c.name}</b><span>${c.title}</span></div></div>`).join('');
 
-  // 作品膠卷牆：單、雙數卡分兩行，各自複製兩份做無縫循環
-  const rows = document.querySelectorAll('#wall .wrow');
-  if(rows.length){
-    const half = [WORK_CARDS.filter((_,i)=>i%2===0), WORK_CARDS.filter((_,i)=>i%2===1)];
-    rows.forEach((row,ri)=>{
-      const cards = half[ri].map(c=>`<div class="mcard">${cardImg(c)}</div>`).join('');
-      row.innerHTML = cards + cards; // 兩份 → translateX(-50%) 無縫
-    });
+  // 作品 spotlight：一次淨係出三張，隔幾秒換一張（隨機次序輪住嚟）
+  // —— 刻意唔一次過晒冷，睇落係「輪流展示」而唔係「全部就得咁多」。
+  const spot = document.getElementById('spot');
+  if(spot && WORK_CARDS.length){
+    const shuffle = a => a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(p=>p[1]);
+    let queue = shuffle([...WORK_CARDS]);
+    const SLOTS = 3;
+    const current = [];
+    const draw = () => {
+      if(!queue.length) queue = shuffle(WORK_CARDS.filter(c=>!current.includes(c)));
+      const c = queue.shift(); return c;
+    };
+    for(let k=0;k<SLOTS;k++){
+      const c = draw(); current.push(c);
+      spot.insertAdjacentHTML('beforeend', `<div class="scard">${cardImg(c)}</div>`);
+    }
+    const slots = [...spot.children];
+    let turn = 0;
+    const rotate = () => {
+      const el = slots[turn], idx = turn;
+      const c = draw();
+      el.classList.add('swap');
+      setTimeout(()=>{
+        current[idx] = c;
+        el.innerHTML = cardImg(c);
+        el.classList.remove('swap');
+      }, 700);
+      turn = (turn+1)%SLOTS;
+    };
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let timer = null;
+    const play = ()=>{ if(!timer && !reduced) timer = setInterval(rotate, 3200); };
+    const stop = ()=>{ clearInterval(timer); timer = null; };
+    new IntersectionObserver(es=>es.forEach(e=> e.isIntersecting?play():stop()), {threshold:.3}).observe(spot);
+    spot.addEventListener('mouseenter', stop);
+    spot.addEventListener('mouseleave', play);
   }
 </script>
 

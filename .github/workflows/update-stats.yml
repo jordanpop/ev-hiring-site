@@ -27,8 +27,8 @@ jobs:
         run: |
           git config user.name "stats-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add stats.json covers/
-          git diff --cached --quiet || git commit -m "chore: weekly stats + covers refresh"
+          git add stats.json
+          git diff --cached --quiet || git commit -m "chore: weekly stats refresh"
           git push
 
       # 行喺 commit 之後：Notion 死咗唔會拖累網站更新，但 job 會轉紅 → email 通知
@@ -37,11 +37,3 @@ jobs:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
         run: python scripts/push_notion.py
 
-      # 新封面 append 上「📸 Cover 圖庫」頁 —— 一律 file link 式，唔會展開 preview
-      - name: Push new covers to Notion (file links)
-        env:
-          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
-        run: |
-          python scripts/push_covers_notion.py
-          git add covers_pushed.json covers_manifest.json
-          git diff --cached --quiet || (git commit -m "chore: notion covers push state" && git push)
