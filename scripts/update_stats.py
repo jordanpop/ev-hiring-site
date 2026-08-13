@@ -208,7 +208,9 @@ def main():
                 vids.append({"date": d.strftime("%Y-%m-%d"), "views": v, "fb": fbv,
                              "url": r.get("url") or "", "caption": cap})
                 if r.get("shortCode") and r.get("displayUrl"):
-                    cover_jobs.append((label, r["shortCode"], r["displayUrl"]))
+                    cover_jobs.append({"label": label, "shortCode": r["shortCode"],
+                                       "url": r["displayUrl"], "views": v,
+                                       "date": d.strftime("%Y-%m-%d")})
         vids.sort(key=lambda x: x["date"])
         monthly[label] = bm
         per_video[label] = vids
@@ -253,7 +255,8 @@ def main():
     # 已存在嘅 skip（shortCode 唯一）；individual 下載失敗只警告，唔會 fail 成個 run。
     import urllib.request as _rq
     new_covers = fail_covers = 0
-    for label, sc, url in cover_jobs:
+    for job in cover_jobs:
+        label, sc, url = job["label"], job["shortCode"], job["url"]
         dest = COVERS_DIR / label / f"{sc}.jpg"
         if dest.exists():
             continue
@@ -266,6 +269,10 @@ def main():
             fail_covers += 1
             print(f"[warn] cover {label}/{sc}: {e}", flush=True)
     print(f"[covers] {new_covers} new downloaded, {fail_covers} failed, dir={COVERS_DIR}", flush=True)
+    # manifest 俾 push_covers_notion.py 用（file link 式上圖庫頁）
+    (REPO_ROOT / "covers_manifest.json").write_text(json.dumps(
+        [{k: j[k] for k in ("label", "shortCode", "views", "date")} for j in cover_jobs],
+        ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
 
     # 實數出街，唔捨入 — 用戶 2026-08-12 拍板：「有幾多就出幾多，真實啲」
     stats = {

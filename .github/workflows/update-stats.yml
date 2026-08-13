@@ -36,3 +36,12 @@ jobs:
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
         run: python scripts/push_notion.py
+
+      # 新封面 append 上「📸 Cover 圖庫」頁 —— 一律 file link 式，唔會展開 preview
+      - name: Push new covers to Notion (file links)
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+        run: |
+          python scripts/push_covers_notion.py
+          git add covers_pushed.json covers_manifest.json
+          git diff --cached --quiet || (git commit -m "chore: notion covers push state" && git push)

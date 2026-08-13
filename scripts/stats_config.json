@@ -2,46 +2,83 @@
   "_comment": "邊啲帳號、點樣 filter 先算「我哋整嘅片」。加 client／filter 飄咗 → 改呢度，唔使掂 script。min_expected = 條數下限（低過即當 scrape 壞咗，唔更新數字）。count_followers=false 可以剔走某帳號嘅 followers（預設計）。",
   "year": 2026,
   "notion_page_id": "395b5c5201f280e592b6eca1451f9f56",
-  "sponsor_brands": ["KFC", "Nespresso", "Blue Bottle", "Segafredo", "伝說", "伝説", "傳說咖啡", "Starbucks", "Pacific Coffee", "% Arabica"],
+  "sponsor_brands": [
+    "KFC",
+    "Nespresso",
+    "Blue Bottle",
+    "Segafredo",
+    "伝說",
+    "伝説",
+    "傳說咖啡",
+    "Starbucks",
+    "Pacific Coffee",
+    "% Arabica"
+  ],
   "accounts": [
     {
       "label": "Winson",
       "handle": "wincrazy",
-      "filter": {"type": "caption_contains", "value": "國際數學考試軍師"},
+      "filter": {
+        "type": "caption_contains",
+        "value": "國際數學考試軍師"
+      },
       "min_expected": 30
     },
     {
       "label": "Gen_i",
       "handle": "Geni.nvestor",
       "frozen": true,
-      "frozen_monthly": {"5": [3, 41248], "6": [8, 46250], "7": [6, 40272]},
+      "frozen_monthly": {
+        "5": [
+          3,
+          41248
+        ],
+        "6": [
+          8,
+          46250
+        ],
+        "7": [
+          6,
+          40272
+        ]
+      },
       "_note": "collaboration 停咗（2026-08-12）— 唔再拉，凍結喺 2026-08-11 snapshot；條數 views 照計入總數，followers 唔計"
     },
     {
       "label": "EliteVoice",
       "handle": "elitevoice.hk",
-      "filter": {"type": "any_video"},
+      "filter": {
+        "type": "any_video"
+      },
       "min_expected": 10
     },
     {
       "label": "ivankeatingg",
       "handle": "ivankeatingg",
-      "filter": {"type": "any_video"},
+      "filter": {
+        "type": "any_video"
+      },
       "min_expected": 40
     },
     {
       "label": "yappuccinoo_",
       "handle": "yappuccinoo_",
-      "filter": {"type": "video_not_sponsor"},
+      "filter": {
+        "type": "video_not_sponsor"
+      },
       "min_expected": 30
     },
     {
       "label": "Yoru",
       "handle": "yoru_teppanyaki",
-      "filter": {"type": "caption_contains", "value": "板前十二問"},
+      "filter": {
+        "type": "caption_contains",
+        "value": "板前十二問"
+      },
       "min_expected": 4,
       "_note": "《板前十二問》12 條，7/29 起二/四/六 出街，仲出緊（2026-08-12 出咗 6 條）。下限係捉 scrape 失敗，唔係捉出片進度，所以要設喺已出條數之下",
       "facebook_page": "https://www.facebook.com/p/Yoru-Teppanyaki-100086718939009/"
     }
-  ]
+  ],
+  "notion_covers_page_id": "3bbb5c5201f281a18f7ed43a9df1e9b6"
 }
