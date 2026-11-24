@@ -1,36 +1,10 @@
 {
-  "updated": "2026-11-01",
-  "views": 17226390,
-  "views_display": 17226390,
-  "videos": 254,
-  "videos_display": 254,
-  "followers": 105520,
-  "followers_display": 105520,
-  "per_account": {
-    "Winson": {
-      "videos": 60,
-      "views": 1563941
-    },
-    "Gen_i": {
-      "videos": 17,
-      "views": 127770,
-      "frozen": true
-    },
-    "EliteVoice": {
-      "videos": 33,
-      "views": 3295892
-    },
-    "ivankeatingg": {
-      "videos": 85,
-      "views": 1129866
-    },
-    "yappuccinoo_": {
-      "videos": 47,
-      "views": 10243778
-    },
-    "Yoru": {
-      "videos": 12,
-      "views": 865143
-    }
-  }
+  "updated": "2026-11-23",
+  "observed_at": "2026-11-23T03:02:42.773057+08:00",
+  "views": 18259764,
+  "views_display": 18259764,
+  "videos": 315,
+  "videos_display": 315,
+  "followers": 109554,
+  "followers_display": 109554
 }
